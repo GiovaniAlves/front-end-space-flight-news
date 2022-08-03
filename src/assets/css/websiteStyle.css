@@ -1,0 +1,24 @@
+:root {
+    --main-bg-color: #cbc6c6;
+    --main-text-color: #1e2022;
+    --second-text-color: #302e53;
+    --second-bg-color: #e8e5e5;
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    src:url("./../RobotoCondensed-Regular.ttf");
+}
+
+body {
+    background-color: #fff;
+    font-family: "Roboto Condensed";
+}
+
+h1, p, small {
+    color: #1e2022;
+}
+
+button {
+    color: #d07017;
+}
