@@ -7,6 +7,12 @@ const index = async (perPage) => {
    return response.data
 }
 
+const search = async (perPage, filters) => {
+   const response = await axiosCliente.post(`${route}/search?per_page=${perPage}`, filters)
+   return response.data
+}
+
 export default {
-   index
+   index,
+   search
 }
