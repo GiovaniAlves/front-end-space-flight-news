@@ -5,45 +5,42 @@
          Space Flight News
       </p>
       <hr class="width-full">
-      <div class="card mb-3 border-0" style="max-width: 540px;">
-         <div class="row g-0">
-            <div class="col-md-4 px-1">
-               <img src="./../../../assets/logo.png" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-               <div class="card-body">
-                  <h5 class="card-title fw-bold">Decolagem James Web</h5>
-                  <div class="d-flex justify-content-between">
-                     <p class="card-text"><small class="text-muted">dd/mm/yyyy</small></p>
-                     <button type="button" class="btn btn-secondary btn-sm">NewsSite</button>
+      <div class="mb-2 fw-bold" v-if="loadingArticles">Carregando...</div>
+      <div v-else v-for="(article, index) in articles.data" :key="article.id" class="card mb-5 border-0" style="max-width: 540px;">
+         <div v-if="index % 2 === 0">
+            <div class="row g-0">
+               <div class="col-md-4 px-1">
+                  <img :src="article.imageUrl" class="img-fluid rounded-start" alt="...">
+               </div>
+               <div class="col-md-8">
+                  <div class="card-body">
+                     <h5 class="card-title fw-bold">{{ article.title }}</h5>
+                     <div class="d-flex justify-content-between">
+                        <p class="card-text"><small class="text-muted">{{ article.publishedAt }}</small></p>
+                        <button type="button" class="btn btn-secondary btn-sm">{{ article.newsSite }}</button>
+                     </div>
+                     <p class="card-text">{{ article.summary }}</p>
+                     <button class="btn btn-secondary">Ver Mais</button>
                   </div>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                     additional content. This content is a little bit longer. This is a wider card with supporting
-                     text below as a natural lead-in.
-                  </p>
-                  <button class="btn btn-secondary">Ver Mais</button>
                </div>
             </div>
          </div>
-      </div>
-      <div class="card my-3 border-0" style="max-width: 540px;">
-         <div class="row g-0">
-            <div class="col-md-8">
-               <div class="card-body">
-                  <h5 class="card-title fw-bold">Decolagem James Web</h5>
-                  <div class="d-flex justify-content-between">
-                     <p class="card-text"><small class="text-muted">dd/mm/yyyy</small></p>
-                     <button type="button" class="btn btn-secondary btn-sm">NewsSite</button>
+         <div v-else>
+            <div class="row g-0">
+               <div class="col-md-8">
+                  <div class="card-body">
+                     <h5 class="card-title fw-bold">{{ article.title }}</h5>
+                     <div class="d-flex justify-content-between">
+                        <p class="card-text"><small class="text-muted">{{ article.publishedAt }}</small></p>
+                        <button type="button" class="btn btn-secondary btn-sm">{{ article.newsSite }}</button>
+                     </div>
+                     <p class="card-text">{{ article.summary }}</p>
+                     <button class="btn btn-secondary">Ver Mais</button>
                   </div>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                     additional content. This content is a little bit longer. This is a wider card with supporting
-                     text below as a natural lead-in.
-                  </p>
-                  <button class="btn btn-secondary">Ver Mais</button>
                </div>
-            </div>
-            <div class="col-md-4 px-1">
-               <img src="./../../../assets/logo.png" class="img-fluid rounded-start" alt="...">
+               <div class="col-md-4 px-1">
+                  <img :src="article.imageUrl" class="img-fluid rounded-start" alt="...">
+               </div>
             </div>
          </div>
       </div>
@@ -55,8 +52,22 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
-  name: 'Home'
+   name: 'Home',
+   computed: {
+      ...mapState({
+         articles: state => state.website.articles,
+         loadingArticles: state => state.website.articles.loading
+      })
+   },
+   async created () {
+      await this.getArticles()
+   },
+   methods: {
+      ...mapActions(['getArticles'])
+   }
 }
 </script>
 
