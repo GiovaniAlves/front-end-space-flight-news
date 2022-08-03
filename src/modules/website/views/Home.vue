@@ -1,16 +1,20 @@
 <template>
    <div class="d-flex flex-column align-items-center mt-5">
       <div id="circulo"></div>
+
       <p class="h4">
          Space Flight News
       </p>
+
       <hr class="width-full">
-      <div class="mb-2 fw-bold" v-if="loadingArticles">Carregando...</div>
+
+      <div v-if="loadingArticles" class="mb-2 fw-bold">Carregando...</div>
+
       <div v-else v-for="(article, index) in articles.data" :key="article.id" class="card mb-5 border-0" style="max-width: 540px;">
          <div v-if="index % 2 === 0">
             <div class="row g-0">
                <div class="col-md-4 px-1">
-                  <img :src="article.imageUrl" class="img-fluid rounded-start" alt="...">
+                  <img :src="article.imageUrl" class="img-fluid rounded-start" :alt="article.title">
                </div>
                <div class="col-md-8">
                   <div class="card-body">
@@ -39,15 +43,17 @@
                   </div>
                </div>
                <div class="col-md-4 px-1">
-                  <img :src="article.imageUrl" class="img-fluid rounded-start" alt="...">
+                  <img :src="article.imageUrl" class="img-fluid rounded-start" :alt="article.title">
                </div>
             </div>
          </div>
       </div>
+
       <i class="bi bi-square small"></i>
       <i class="bi bi-square small"></i>
       <i class="bi bi-square small"></i>
-      <button type="button" class="btn btn-outline-purple btn-md mt-3">Carregar Mais</button>
+
+      <button @click="loadMore" type="button" class="btn btn-outline-purple btn-md mt-3">Carregar Mais</button>
    </div>
 </template>
 
@@ -56,6 +62,11 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
    name: 'Home',
+   data () {
+      return {
+         perPage: 5
+      }
+   },
    computed: {
       ...mapState({
          articles: state => state.website.articles,
@@ -63,10 +74,15 @@ export default {
       })
    },
    async created () {
-      await this.getArticles()
+      await this.getArticles(this.perPage)
    },
    methods: {
-      ...mapActions(['getArticles'])
+      ...mapActions(['getArticles']),
+
+      async loadMore () {
+         this.perPage = this.perPage + 5
+         await this.getArticles(this.perPage)
+      }
    }
 }
 </script>

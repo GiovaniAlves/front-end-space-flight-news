@@ -2,8 +2,8 @@ import axiosCliente from '../../../../axios'
 
 const route = '/articles'
 
-const index = async () => {
-   const response = await axiosCliente.get(`${route}`)
+const index = async (perPage) => {
+   const response = await axiosCliente.get(`${route}?per_page=${perPage}`)
    return response.data
 }
 
